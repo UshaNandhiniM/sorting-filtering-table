@@ -65,8 +65,7 @@
                 return columnIndex === 1 ? nameA - nameB : nameA.localeCompare(nameB);
             });
 
-            if (!ascending) rows.reverse(); // Toggle order
-
+            if (!ascending) rows.reverse(); 
             table.setAttribute("data-sort", ascending ? "asc" : "desc");
 
             let tbody = table.querySelector("tbody");
