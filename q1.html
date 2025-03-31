@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting and filtering</title>
+    <style>
+         table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: rgb(182, 165, 165);
+            cursor: pointer;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="search" placeholder="search here..." onkeyup="filterTable()">
+    <table id="table">
+        <thead>
+        <tr>
+            <th onclick="tableSort(0)">Name</th>
+            <th onclick="tableSort(1)">Age</th>
+            <th onclick="tableSort(2)">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Usha</td><td>18</td><td>15/03/2020</td></tr>
+        <tr><td>keerthana</td><td>95</td><td>4/09/2010</td></tr>
+        <tr><td>Ambika</td><td>62</td><td>14/7/2011</td></tr>
+        <tr><td>murugan</td><td>34</td><td>27/6/2011</td></tr>
+    </tbody>
+    </table>
+    <script>
+        function filterTable() {
+            let searchInput = document.getElementById("search").value.toLowerCase();
+            let rows = document.querySelectorAll("#table tbody tr");
+
+            rows.forEach(row => {
+                let name = row.cells[0].innerText.toLowerCase();
+                let age = row.cells[1].innerText.toLowerCase();
+                row.style.display = name.includes(searchInput) ||age.includes(searchInput) ? "" : "none";
+            });
+        }
+        function tableSort(columnIndex) {
+            let table = document.getElementById("table");
+            let rows = Array.from(table.querySelectorAll("tbody tr"));
+            let ascending = table.getAttribute("data-sort") !== "asc";
+
+            rows.sort((rowA, rowB) => {
+                let nameA = rowA.cells[columnIndex].innerText;
+                let nameB = rowB.cells[columnIndex].innerText;
+
+                return columnIndex === 1 ? nameA - nameB : nameA.localeCompare(nameB);
+            });
+
+            if (!ascending) rows.reverse(); // Toggle order
+
+            table.setAttribute("data-sort", ascending ? "asc" : "desc");
+
+            let tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
+    
+</body>
+</html>
